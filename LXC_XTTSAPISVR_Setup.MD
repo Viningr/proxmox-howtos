@@ -94,7 +94,7 @@ source ~/.bashrc
 ```
 
 
-##2. Install the xtts-api-server project.
+## 2. Install the xtts-api-server project.
 
 - Pick a location to host the project files, I will be installing to ~/ (/root/). Please be aware this is poor practise if you intend to put this into production, these values are for demonstration purposes only.
 ```bash
