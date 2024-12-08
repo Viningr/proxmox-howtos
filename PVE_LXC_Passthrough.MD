@@ -2,11 +2,15 @@
 
 ## Before starting, make sure that the Nvidia driver (and potentially the nvidia-container-toolkit) is installed on the host. Note the driver version and ensure you have configured DKMS on your system if it uses secure boot/uefi. The driver must have kernel modules enabled. Verify the driver is reporting in the nvidia-smi tool. Additional steps may be required to configure passthrough, I know this is needed on VMs which consume the GPU, but containers may not require.
 
+### Container creation.
+
 - Create container, ensure you uncheck the unprivileged setting during container creation.
 - Once created, under Options\Features, enable Nesting.
 - Under Resources, add a passthrough device, typically /dev/nvidia0 on a single GPU system. Use the default settings and apply.
-
+- Under Options\Features, enable nesting.
 - Start the container to verify basic functionality before setting up GPU permissions and symlinks. Shut the container down once you have confirmed you can log on.
+
+### Derive LXC cgroup2 permissions and symlink paths for mounting.
 
 - On your host, find the appropriate permissions to add to the LXC config:
 
