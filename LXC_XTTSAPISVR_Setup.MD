@@ -129,7 +129,7 @@ python -m xtts_api_server --listen --device cuda:0
 
 - Args for network service: -m xtts_api_server --device cuda:0 --deepspeed -v v2.0.3 --host 0.0.0.0 -t http://<CT_IPADDRESS>
 
-- Once the manual validation is successful, transfer your voice sample files to ~/stts-api-server/speakers.
+- Once the manual validation is successful, transfer your voice sample files to ~/xtts-api-server/speakers.
 
 - Create a new systemd service.
 ```bash
