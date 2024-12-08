@@ -6,7 +6,8 @@
 ##1. Set up the container and container prerequisites:
 
 - Create a new LXC container based on the debian12-nvidia template created earlier.
-- Specs:
+
+## Specs:
 * unprivileged: 0
 * cores: 4
 * memory: 8192
@@ -72,6 +73,7 @@ apt install cuda-profiler-api-12-4 libcublas-dev-12-4 #, CUDA api profiler, CUBL
 - If you need deepspeed, ignore the previous steps and installe the full cuda toolkit.
 ```bash
 apt install cuda-toolkit-12-4 -y
+```
 
 - Add the environment variables to the shell:
 ```bash
