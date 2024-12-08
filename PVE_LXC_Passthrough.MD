@@ -4,7 +4,7 @@
 
 ***https://www.nvidia.com/en-us/drivers/***
 
- Note the driver version and ensure you have configured DKMS on your system if it uses secure boot/uefi. The driver must have kernel modules enabled. Verify the driver is reporting in the nvidia-smi tool. Additional steps may be required to configure passthrough, I know this is needed on VMs which consume the GPU, but containers may not require. Nvidia driver signing and DKMS is outside of the scope of this quick guide.
+## Note the driver version and ensure you have configured DKMS on your system if it uses secure boot/uefi. The driver must have kernel modules enabled. Verify the driver is reporting in the nvidia-smi tool. Additional steps may be required to configure passthrough, I know this is needed on VMs which consume the GPU, but containers may not require. Nvidia driver signing and DKMS is outside of the scope of this quick guide.
 
 ### Container creation.
 
