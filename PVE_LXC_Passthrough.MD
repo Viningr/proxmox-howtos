@@ -94,7 +94,7 @@ dpkg -i cuda-keyring_1.1-1_all.deb
 
 - Add the CUDA repository:
 ```bash
-echo "deb [signed-by=/usr/share/keyrings/cuda-archive-keyring.gpg] https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/ /" | sudo tee /etc/apt/sources.list.d/cuda.list
+echo "deb [signed-by=/usr/share/keyrings/cuda-archive-keyring.gpg] https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/ /" | tee /etc/apt/sources.list.d/cuda.list
 apt update
 ```
 ### (switch: choose one based on your requirements)
