@@ -10,10 +10,12 @@
 
 - On your host, find the appropriate permissions to add to the LXC config:
 
+```bash
 ls -l /dev/nvidia*
 
 This will return something similar to:
 
+```bash
 root@pve:/etc/pve/lxc# ls -l /dev/nvidia*
 crw-rw-rw- 1 root root 195,   0 Dec  2 23:10 /dev/nvidia0
 crw-rw-rw- 1 root root 195, 255 Dec  2 23:10 /dev/nvidiactl
