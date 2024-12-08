@@ -1,6 +1,6 @@
 # Nvidia GPU enabled LXC containers on Proxmox 8.3.1.
 
-## Before starting, make sure that the Nvidia driver (and potentially the nvidia-container-toolkit) is installed on the host. Files and additional information on installing the nvidia driver for Debian can be found at nvidias website.
+## Before starting, make sure that the Nvidia driver (and potentially the nvidia-container-toolkit) is installed on the host. Files and additional information on installing the driver for Debian can be found at Nvidias website. I use the one in drivername.run format as opposed to the apt package.
 
 ***https://www.nvidia.com/en-us/drivers/***
 
