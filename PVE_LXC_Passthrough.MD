@@ -1,6 +1,6 @@
 # Nvidia GPU enabled LXC containers on Proxmox 8.3.1.
 
-# Before starting, make sure that the Nvidia driver (and potentially the nvidia-container-toolkit) is installed on the host. Note the driver version and ensure you have configured DKMS on your system if it uses secure boot/uefi. The driver must have kernel modules enabled. Verify the driver is reporting in the nvidia-smi tool. Additional steps may be required to configure passthrough, I know this is needed on VMs which consume the GPU, but containers may not require.
+## Before starting, make sure that the Nvidia driver (and potentially the nvidia-container-toolkit) is installed on the host. Note the driver version and ensure you have configured DKMS on your system if it uses secure boot/uefi. The driver must have kernel modules enabled. Verify the driver is reporting in the nvidia-smi tool. Additional steps may be required to configure passthrough, I know this is needed on VMs which consume the GPU, but containers may not require.
 
 - Create container, ensure you uncheck the unprivileged setting during container creation.
 - Once created, under Options\Features, enable Nesting.
