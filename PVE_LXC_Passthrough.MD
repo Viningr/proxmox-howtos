@@ -32,6 +32,7 @@ cr--r--r-- 1 root root 510, 2 Dec  2 23:10 nvidia-cap2
 
 - From this output you can determine the cgroup2 permissions:
 
+```ini
 ### Device permissions for NVIDIA GPU passthrough
 lxc.cgroup2.devices.allow: c 195:* rwm  # For nvidia0, nvidiactl, nvidia-modeset
 lxc.cgroup2.devices.allow: c 507:* rwm  # For nvidia-uvm, nvidia-uvm-tools
@@ -45,9 +46,11 @@ lxc.mount.entry: /dev/nvidia-uvm dev/nvidia-uvm none bind,optional,create=file
 lxc.mount.entry: /dev/nvidia-uvm-tools dev/nvidia-uvm-tools none bind,optional,create=file
 lxc.mount.entry: /dev/nvidia-caps/nvidia-cap1 dev/nvidia-caps/nvidia-cap1 none bind,optional,create=file
 lxc.mount.entry: /dev/nvidia-caps/nvidia-cap2 dev/nvidia-caps/nvidia-cap2 none bind,optional,create=file
+```
 
 - add the "lxc.autodev: 0" property to the config as well, as we are manually configuring the device.
 
+```ini
 ## Example ctid.conf additions:
 <existing CTID.conf contents>...
 lxc.autodev: 0
@@ -61,7 +64,7 @@ lxc.mount.entry: /dev/nvidia-uvm dev/nvidia-uvm none bind,optional,create=file
 lxc.mount.entry: /dev/nvidia-uvm-tools dev/nvidia-uvm-tools none bind,optional,create=file
 lxc.mount.entry: /dev/nvidia-caps/nvidia-cap1 dev/nvidia-caps/nvidia-cap1 none bind,optional,create=file
 lxc.mount.entry: /dev/nvidia-caps/nvidia-cap2 dev/nvidia-caps/nvidia-cap2 none bind,optional,create=file
-
+```
 
 - Once you have added the permissions and mount entries, you will need to start the container again, then log on and install the Nvidia driver. Ensure this is the same version installed on the host. When you install (use the .run version) use the `--no-kernel-module` flag after the driver run file name.
 
