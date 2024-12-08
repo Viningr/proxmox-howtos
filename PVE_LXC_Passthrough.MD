@@ -28,6 +28,7 @@ crw-rw-rw- 1 root root 507,   1 Dec  2 23:10 /dev/nvidia-uvm-tools
 total 0
 cr-------- 1 root root 510, 1 Dec  2 23:10 nvidia-cap1
 cr--r--r-- 1 root root 510, 2 Dec  2 23:10 nvidia-cap2
+```
 
 - From this output you can determine the cgroup2 permissions:
 
@@ -70,38 +71,49 @@ lxc.mount.entry: /dev/nvidia-caps/nvidia-cap2 dev/nvidia-caps/nvidia-cap2 none b
 
 - Sign into the container.
 - Update Apt
+```bash
 apt update
+```
 
 - Install the Nvidia keyring. Navigate to an appropriate folder then run:
+```bash
 wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb
 dpkg -i cuda-keyring_1.1-1_all.deb
+```
 
 - Add the CUDA repository:
+```bash
 echo "deb [signed-by=/usr/share/keyrings/cuda-archive-keyring.gpg] https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/ /" | sudo tee /etc/apt/sources.list.d/cuda.list
 apt update
-
+```
 ### (switch: choose one based on your requirements)
 
 - Full CUDA toolkit (assuming cuda 12.4)
+```bash
 apt -y install cuda-toolkit-12-4 
+```
 
 - Tailored packages for smaller footprint:
+```bash
 apt install cuda-cudart-12-4 cuda-nvcc-12-4 #CUDA Runtime library and CUDA compiler
+```
 
 ### Add enviroment variables to the shell:
 
 - Append these lines to your .bashrc file
+```bash
 echo 'export PATH=/usr/local/cuda-12.4/bin:$PATH' >> ~/.bashrc
 echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.4/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
 echo 'export CUDA_HOME=/usr/local/cuda-12.4' >> ~/.bashrc
+```
 
 - Reload the .bashrc file
+```bash
 source ~/.bashrc
-
-
+```
 
 ## An example of a systemd service configuration which includes the CUDA environment declarations:
-
+```ini
 [Unit]
 Description=CUDA-Enabled Application Service
 After=network.target
@@ -142,3 +154,4 @@ StandardError=inherit
 
 [Install]
 WantedBy=multi-user.target
+```
