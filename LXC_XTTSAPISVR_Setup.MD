@@ -64,9 +64,10 @@ apt update
 apt install cuda-cudart-12-4 cuda-nvcc-12-4 cuda-profiler-api-12-4 libcublas-dev-12-4 #CUDA Runtime library and CUDA compiler
 ```
 
-- (optional: only needed if intending to use the --deepspeed switch)
+- (optional: only needed if intending to use the --deepspeed switch) ***deepspeed option not working as systemd service, will need updates to original project code relating to jit compilation of deepspeed.***
 ```bash
-apt install cuda-profiler-api-12-4 libcublas-dev-12-4 #, CUDA api profiler, CUBLAS headers
+apt install cuda-cudart-dev-12-4 cuda-nvcc-12-4 cuda-profiler-api-12-4 libcublas-dev-12-4 cuda-libraries-dev-12-4 cuda-command-line-tools-12-4
+
 ```
 ### End of deepspeed free requirements.
 
@@ -133,7 +134,7 @@ python -m xtts_api_server --listen --device cuda:0
 
 - Create a new systemd service.
 ```bash
-nano /etc/systemd/system/xtts-api-service.service
+nano /etc/systemd/system/xtts-api-server.service
 ```
 
 ```ini
@@ -149,7 +150,7 @@ WorkingDirectory=/root/xtts-api-server
 Environment="PATH=/root/xtts-api-server/venv/bin:/usr/local/cuda-12.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 Environment="LD_LIBRARY_PATH=/usr/local/cuda-12.4/lib64"
 Environment="CUDA_HOME=/usr/local/cuda-12.4"
-ExecStart=/root/xtts-api-server/venv/bin/python -m xtts_api_server --device cuda:0 --deepspeed -v v2.0.3 --host 0.0.0.0 -t http://10.0.0.1 #This is an example only, set this to your container IP.
+ExecStart=/root/xtts-api-server/venv/bin/python -m xtts_api_server --device cuda:0 -v v2.0.3 --listen
 Restart=always
 RestartSec=10
 
@@ -161,7 +162,7 @@ WantedBy=multi-user.target
 ```bash
 systemctl daemon-reload
 systemctl enable xtts-api-server.service
-systemctl start xtts-api-service
+systemctl start xtts-api-server
 ```
 
 - Test the service. It should be reachable on the container IP:8020 over http. Refer to the original github for the project for more information on program operation. You can check the status with:
