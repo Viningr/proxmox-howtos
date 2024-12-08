@@ -12,6 +12,7 @@
 
 ```bash
 ls -l /dev/nvidia*
+```
 
 This will return something similar to:
 
