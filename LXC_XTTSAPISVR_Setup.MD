@@ -1,18 +1,18 @@
 # Set up xtts-api-server in PVE LXC container.
 
-##This is my documentation of the process I used to install xtts-api-server as a systemd service on a Proxmox hosted LXC container with GPU passthrough. The xtts-api-server project is authored by daswer123 at https://github.com/daswer123/xtts-api-server .
+##This is my documentation of setting up xtts-api-server as a systemd service on a Proxmox hosted LXC container with GPU passthrough. The xtts-api-server project is authored by daswer123 at https://github.com/daswer123/xtts-api-server .
 
 
 ##1. Set up the container and container prerequisites:
 
 - Create a new LXC container based on the debian12-nvidia template created earlier.
 
-## Specs:
+## Initial Specs:
 * unprivileged: 0
-* cores: 4
+* cores: 4+
 * memory: 8192
 * static IPv4
-* storage: 32GB
+* storage: 20GB
 
 - Complete provisioning of LXC.
 - Update Resources with addition of passthrough device /dev/nvidia0.
@@ -58,23 +58,11 @@ echo "deb [signed-by=/usr/share/keyrings/cuda-archive-keyring.gpg] https://devel
 apt update
 ```
 
-### Attempted to install light cuda requirements, these work for running without deepspeed support.
-- Install the CUDA runtime and compiler.
+- Install the CUDA runtime.
 ```bash
-apt install cuda-cudart-12-4 cuda-nvcc-12-4 cuda-profiler-api-12-4 libcublas-dev-12-4 #CUDA Runtime library and CUDA compiler
+apt install cuda-cudart-12-4 #CUDA Runtime library
 ```
-
-- (optional: only needed if intending to use the --deepspeed switch) ***deepspeed option not working as systemd service, will need updates to original project code relating to jit compilation of deepspeed.***
-```bash
-apt install cuda-cudart-dev-12-4 cuda-nvcc-12-4 cuda-profiler-api-12-4 libcublas-dev-12-4 cuda-libraries-dev-12-4 cuda-command-line-tools-12-4
-
-```
-### End of deepspeed free requirements.
-
-- If you need deepspeed, ignore the previous steps and installe the full cuda toolkit.
-```bash
-apt install cuda-toolkit-12-4 -y
-```
+*** NOTE: Deepspeed flag is not supported when running this application from systemd services. Project needs to be updated with support for precompiled wheel in linux. ***
 
 - Add the environment variables to the shell:
 ```bash
@@ -93,7 +81,6 @@ apt install python3-pip python3-venv git portaudio19-dev ffmpeg -y
 ```bash
 source ~/.bashrc
 ```
-
 
 ## 2. Install the xtts-api-server project.
 
@@ -119,16 +106,12 @@ EOF
 source venv/bin/activate #(confirm you see the prompt change).
 # Install deps
 pip install -r requirements.txt
-pip install TTS deepspeed ffmpeg
-pip install torch==2.1.1+cu118 torchaudio==2.1.1+cu118 --index-url https://download.pytorch.org/whl/cu118
+
 # Launch server
-python -m xtts_api_server --listen --device cuda:0
+python -m xtts_api_server --listen --device cuda:0 -v v2.0.3
 ```
 
-- Confirm the program loads and is connectable on the container IP:8020.
-
-
-- Args for network service: -m xtts_api_server --device cuda:0 --deepspeed -v v2.0.3 --host 0.0.0.0 -t http://<CT_IPADDRESS>
+- Confirm the program loads and is connectable on the container IP port 8020.
 
 - Once the manual validation is successful, transfer your voice sample files to ~/xtts-api-server/speakers.
 
@@ -150,7 +133,7 @@ WorkingDirectory=/root/xtts-api-server
 Environment="PATH=/root/xtts-api-server/venv/bin:/usr/local/cuda-12.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 Environment="LD_LIBRARY_PATH=/usr/local/cuda-12.4/lib64"
 Environment="CUDA_HOME=/usr/local/cuda-12.4"
-ExecStart=/root/xtts-api-server/venv/bin/python -m xtts_api_server --device cuda:0 -v v2.0.3 --listen
+ExecStart=/root/xtts-api-server/venv/bin/python -m xtts_api_server --listen --device cuda:0 -v v2.0.3
 Restart=always
 RestartSec=10
 
@@ -161,12 +144,20 @@ WantedBy=multi-user.target
 
 ```bash
 systemctl daemon-reload
-systemctl enable xtts-api-server.service
+systemctl enable xtts-api-server
 systemctl start xtts-api-server
 ```
 
-- Test the service. It should be reachable on the container IP:8020 over http. Refer to the original github for the project for more information on program operation. You can check the status with:
+- Test the service. It should be reachable on the container IP:8020 over http. Refer to the original project repository for more information on program operation and arguments. You can check the status with:
 ```bash
 systemctl status xtts-api-server
 ```
 
+- ***The container will automatically start the xtts-api-server on boot.***
+
+## The final container can be optimized after setup, depending on how much space you use for voice samples, there should be 25-30% of the 20GB boot disk free. Final CT specs that work well for me:
+
+vCPU: 2
+RAM: 4096 MB
+SWAP: 512 MB
+Host GPU vram: 3784 MB used after inference.
