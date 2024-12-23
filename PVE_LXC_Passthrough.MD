@@ -1,11 +1,35 @@
 # Nvidia GPU enabled LXC containers on Proxmox 8.3.1.
 
 ###
-Before starting, make sure that the Nvidia driver (and potentially the nvidia-container-toolkit) is installed on the host. Files and additional information on installing the driver for Debian can be found at Nvidias website. I use the one in drivername.run format as opposed to the apt package.
+Before starting, make sure that the Nvidia driver (and potentially the nvidia-container-toolkit) is installed on the host. Files and additional information on installing the driver for Debian can be found at Nvidias website. 
 
-***https://www.nvidia.com/en-us/drivers/***
+## Nvidia cuda driver install quicknotes for Debian 12 LXC - no sudo
 
-Note the driver version and ensure you have configured DKMS on your system if it uses secure boot/uefi. The driver must have kernel modules enabled. Verify the driver is reporting in the nvidia-smi tool. Additional steps may be required to configure passthrough, I know this is needed on VMs which consume the GPU, but containers may not require. The sudo command may be required for some systems where this is installed, this guide is written for packages based on the default debian 12 LXC template included with Proxmox, or derivatives that have not had the sudo package installed. Nvidia driver signing and DKMS is outside of the scope of this quick guide.
+### Requirements installation
+
+```bash
+apt update
+apt install build-essential software-properties-common
+```
+
+###Install driver
+
+```bash
+add-apt-repository contrib
+apt-key del 7fa2af80
+mkdir /root/nvidia && cd /root/nvidia
+wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb
+dpkg -i cuda-keyring_1.1-1_all.deb
+apt-get update
+apt-get install cuda-drivers-565
+```
+
+###Verify GPU is available with:
+
+```bash
+nvidia-smi -q -D MEMORY
+```
+
 
 ### Container creation.
 
