@@ -20,6 +20,7 @@ apt-key del 7fa2af80
 mkdir /root/nvidia && cd /root/nvidia
 wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb
 dpkg -i cuda-keyring_1.1-1_all.deb
+echo "deb [signed-by=/usr/share/keyrings/cuda-archive-keyring.gpg] https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/ /" | sudo tee /etc/apt/sources.list.d/cuda.list
 apt-get update
 apt-get install cuda-drivers-565
 ```
