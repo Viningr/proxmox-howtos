@@ -155,7 +155,7 @@ systemctl status xtts-api-server
 
 - ***The container will automatically start the xtts-api-server on boot.***
 
-## The final container can be optimized after setup, depending on how much space you use for voice samples, there should be 25-30% of the 20GB boot disk free. Final CT specs that work well for me:
+- The final container can be optimized after setup, depending on how much space you use for voice samples, there should be 25-30% of the 20GB boot disk free. Final CT specs that work well for me:
 ```ini
 vCPU: 2
 RAM: 4096 MB
