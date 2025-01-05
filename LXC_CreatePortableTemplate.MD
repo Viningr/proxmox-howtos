@@ -21,7 +21,7 @@ apt update && apt upgrade -y
 apt install python3 python3-pip
 ```
 
-- Clean up the filesystem and unique machine properties and reduce the disk space usage:
+- Clean up the filesystem and unique machine properties:
 ```bash
 apt clean
 apt autoclean
@@ -30,8 +30,6 @@ rm /etc/hostname
 rm /etc/resolv.conf # (optional: for some setups, preserving resolv.conf might be necessary if there are specific DNS settings required.)
 rm /etc/machine-id
 rm /etc/ssh/ssh_host_*
-dd if=/dev/zero of=/EMPTY bs=1M
-rm -f /EMPTY
 exit
 ```
 
