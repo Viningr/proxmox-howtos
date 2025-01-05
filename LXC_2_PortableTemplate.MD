@@ -22,7 +22,7 @@ apt install python3 python3-pip
 ```
 
 - Clean up the filesystem and unique machine properties:
----bash
+```bash
 apt clean
 apt autoclean
 apt autoremove
