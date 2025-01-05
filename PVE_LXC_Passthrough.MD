@@ -3,7 +3,7 @@
 ###
 Before starting, make sure that the Nvidia driver (and potentially the nvidia-container-toolkit) is installed on the host. Files and additional information on installing the driver for Debian can be found at Nvidias website. 
 
-## Nvidia cuda driver install quicknotes for Debian 12 LXC - no sudo
+## Nvidia cuda driver install for Debian 12 host - no sudo (add sudo to start of any commands which make changes to the system if you are using sudo).
 
 ### Requirements installation
 
