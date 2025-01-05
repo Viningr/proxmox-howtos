@@ -112,36 +112,42 @@ lxc.mount.entry: /dev/nvidia-caps/nvidia-cap2 dev/nvidia-caps/nvidia-cap2 none b
 apt update
 ```
 
-- Install the Nvidia keyring. Navigate to an appropriate folder then run:
+- Install the prerequisites for apt installation of nvidia packages.
 ```bash
-wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb
-dpkg -i cuda-keyring_1.1-1_all.deb
+apt install build-essential software-properties-common
 ```
 
-- Add the CUDA repository:
+- Enable the repositories and install the Nvidia CUDA driver packages.
 ```bash
-echo "deb [signed-by=/usr/share/keyrings/cuda-archive-keyring.gpg] https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/ /" | tee /etc/apt/sources.list.d/cuda.list
-apt update
+add-apt-repository contrib
+apt-key del 7fa2af80
+mkdir /root/nvidia && cd /root/nvidia
+wget https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/cuda-keyring_1.1-1_all.deb
+dpkg -i cuda-keyring_1.1-1_all.deb
+echo "deb [signed-by=/usr/share/keyrings/cuda-archive-keyring.gpg] https://developer.download.nvidia.com/compute/cuda/repos/debian12/x86_64/ /" | sudo tee /etc/apt/sources.list.d/cuda.list
+apt-get update
+apt-get install cuda-drivers-565
 ```
-### (switch: choose one based on your requirements)
+
+### (optional: install additional CUDA packages based on your requirements.)
 
 - Full CUDA toolkit (assuming cuda 12.4)
 ```bash
-apt -y install cuda-toolkit-12-4 
+apt -y install cuda-toolkit-12-6 
 ```
 
 - Tailored packages for smaller footprint:
 ```bash
-apt install cuda-cudart-12-4 cuda-nvcc-12-4 #CUDA Runtime library and CUDA compiler
+apt install cuda-cudart-12-6 cuda-nvcc-12-6 #CUDA Runtime library and CUDA compiler
 ```
 
 ### Add enviroment variables to the shell:
 
 - Append these lines to your .bashrc file
 ```bash
-echo 'export PATH=/usr/local/cuda-12.4/bin:$PATH' >> ~/.bashrc
-echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.4/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
-echo 'export CUDA_HOME=/usr/local/cuda-12.4' >> ~/.bashrc
+echo 'export PATH=/usr/local/cuda-12.6/bin:$PATH' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.6/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+echo 'export CUDA_HOME=/usr/local/cuda-12.6' >> ~/.bashrc
 ```
 
 - Reload the .bashrc file
@@ -164,9 +170,9 @@ User=cudauser
 Group=cudagroup
 
 # Set the environment variables for CUDA
-Environment=PATH=/usr/local/cuda-12.4/bin:$PATH
-Environment=LD_LIBRARY_PATH=/usr/local/cuda-12.4/lib64:$LD_LIBRARY_PATH
-Environment=CUDA_HOME=/usr/local/cuda-12.4
+Environment=PATH=/usr/local/cuda-12.6/bin:$PATH
+Environment=LD_LIBRARY_PATH=/usr/local/cuda-12.6/lib64:$LD_LIBRARY_PATH
+Environment=CUDA_HOME=/usr/local/cuda-12.6
 
 # If you need additional environment variables, you can use EnvironmentFile instead
 # EnvironmentFile=/etc/sysconfig/cuda_env
