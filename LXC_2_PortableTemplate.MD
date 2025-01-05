@@ -62,5 +62,5 @@ You will now find the new template under the "Create CT" dropdown menu. In my te
 ### References
 Original post at https://www.reddit.com/r/homelab/comments/5xvfbf/how_to_proxmox_modify_a_ct_container_template/
 
-##DISCLAIMER
+## DISCLAIMER
 It should go without saying, if you are working with data that is important, make sure you have a separate backup stored somewhere safe. This process will be moving backup files; do not move or delete the wrong one. While this guide has been written in good faith, I am not responsible for any actions you take in following it. If you do not understand commands or concepts, please review before working on anything valuable.
