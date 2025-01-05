@@ -21,7 +21,7 @@ apt update && apt upgrade -y
 apt install python3 python3-pip
 ```
 
-- Clean up the filesystem and unique machine properties:
+- Clean up the filesystem and unique machine properties and reduce the disk space usage:
 ```bash
 apt clean
 apt autoclean
@@ -29,9 +29,16 @@ apt autoremove
 rm /etc/hostname
 rm /etc/resolv.conf # (optional: for some setups, preserving resolv.conf might be necessary if there are specific DNS settings required.)
 rm /etc/machine-id
+rm /etc/ssh/ssh_host_*
+dd if=/dev/zero of=/EMPTY bs=1M
+rm -f /EMPTY
+exit
 ```
 
-- From the PVE host UI, shutdown the LXC container.
+- Shut down the contaner from the host side:
+```bash
+pct shutdown <CTID>
+```
 
 - In the PVE host UI, remove any static IPs that may have been configured on the container.
 
