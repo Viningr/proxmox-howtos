@@ -131,7 +131,7 @@ apt-get install cuda-drivers-565
 
 ### (optional: install additional CUDA packages based on your requirements.)
 
-- Full CUDA toolkit (assuming cuda 12.4)
+- Full CUDA toolkit (assuming cuda 12.6)
 ```bash
 apt -y install cuda-toolkit-12-6 
 ```
